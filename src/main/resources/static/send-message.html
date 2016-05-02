@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <script src="sockjs-0.3.4.js"></script>
+    <script src="stomp.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+
+        function reconnect() {
+            disconnect();
+            connect();
+        }
+
+        function connect() {
+            var socket = new SockJS('/hello-user');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+            });
+        }
+
+        function disconnect() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+            }
+            console.log("Disconnected");
+        }
+
+        function sendValue() {
+            var name = document.getElementById('_value').value;
+            stompClient.send("/app/hello-user", {}, JSON.stringify({'value': name}));
+        }
+    </script>
+</head>
+<body onload="reconnect()">
+<div>
+    <form>
+        <input id="_userId" type="text" name="id" placeholder="userId" value="chanwook">
+        <input id="_value" type="text" name="value" placeholder="value">
+
+        <input type="button" value="PC 보내기" onclick="sendValue()">
+    </form>
+</div>
+</body>
+</html>

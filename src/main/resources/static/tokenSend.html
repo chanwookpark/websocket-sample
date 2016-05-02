@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello WebSocket</title>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"
+            integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function send() {
+            var userId = $('#_userId').val();
+            var token = $('#_token').val();
+
+            $.ajax({
+                        method: "POST",
+                        url: "/token/send-request",
+                        data: {userId: userId, token: token}
+                    })
+                    .done(function (msg) {
+                        console.log("[Send] userId: " + userId + ", token: " + token + ", result: " + msg);
+                    });
+        }
+    </script>
+</head>
+<body>
+<div>
+    <form>
+        <input id="_userId" type="text" name="id" placeholder="userId">
+        <input id="_token" type="text" name="value" placeholder="value">
+
+        <!-- TODO 로그인한 사용자의 OTP 센터에서만 이 버튼 활성화 -->
+        <input type="button" value="Send Token" onclick="send()">
+    </form>
+</div>
+</body>
+</html>
